@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page d'accueil</title>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <style>
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: fixed;
+      top: -300px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 800px;
+      pointer-events: none;
+    }
+    .hero-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .hero-title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 500;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      animation: fadeUp 0.4s 0.08s ease both;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 420px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      animation: fadeUp 0.4s 0.16s ease both;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      animation: fadeUp 0.4s 0.24s ease both;
+    }
+    .hero-features {
+      margin-top: 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 700px;
+      animation: fadeUp 0.4s 0.32s ease both;
+    }
+    .hero-feat {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: left;
+    }
+    .hero-feat-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .hero-feat-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .hero-feat-desc {
+      font-size: 12px;
+      color: var(--text3);
+      line-height: 1.5;
+    }
+    @media (max-width: 600px) {
+      .hero-features { grid-template-columns: 1fr; max-width: 360px; }
+    }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <h1 class="hero-title">Votre stock<br />en toute sécurité</h1>
+  <p class="hero-sub">Gérez vos produits, suivez vos entrées/sorties !</p>
+  <div class="hero-actions">
+    <a href="{% url 'register' %}" class="btn btn-primary">Créer un compte</a>
+    <a href="{% url 'login' %}" class="btn btn-outline">Se connecter</a>
+  </div>
+
+
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

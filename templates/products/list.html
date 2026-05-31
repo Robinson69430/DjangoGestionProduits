@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Produits</div>
+    <div class="page-subtitle">{{ products|length }} produit{{ products|length|pluralize }}</div>
+  </div>
+  <a href="{% url 'product_create' %}" class="btn btn-primary">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Nouveau produit
+  </a>
+</div>
+
+{% if products %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Catégorie</th>
+        <th>Quantité</th>
+        <th>Seuil</th>
+        <th>Prix unit.</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>
+          <span style="font-weight:500;">{{ product.name }}</span>
+        </td>
+        <td>
+          {% if product.category %}
+            <span style="display:inline-flex; align-items:center; gap:6px; font-size:13px;">
+              <span class="color-dot" style="background:{{ product.category.color }}"></span>
+              {{ product.category.name }}
+            </span>
+          {% else %}
+            <span class="text-muted" style="font-size:13px;">---</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="stock-bar-wrap">
+            <span class="mono {% if product.is_low_stock %}text-danger{% endif %}" style="min-width:28px;">
+              {{ product.quantity }}
+            </span>
+            <div class="stock-bar">
+              {% if product.min_alert > 0 %}
+                {% widthratio product.quantity product.min_alert 100 as pct %}
+                <div class="stock-bar-fill" data-pct="{{ pct }}"></div>
+              {% else %}
+                <div class="stock-bar-fill" data-pct="100"></div>
+              {% endif %}
+            </div>
+          </div>
+        </td>
+        <td class="mono text-muted">{{ product.min_alert }}</td>
+        <td class="mono">{{ product.price }} €</td>
+        <td>
+          {% if product.is_low_stock %}
+            <span class="badge badge-red">Rupture</span>
+          {% else %}
+            <span class="badge badge-green">OK</span>
+          {% endif %}
+        </td>
+        <td>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <a href="{% url 'movement_create' product.pk %}" class="btn btn-outline btn-sm">
+              Mouvement
+            </a>
+            <a href="{% url 'product_edit' product.pk %}" class="btn btn-outline btn-sm">
+              Modifier
+            </a>
+            <a href="{% url 'historique' product.pk %}" class="btn btn-outline btn-sm">
+              Historique
+            </a>
+            <!-- Form cachée pour suppression -->
+            <form id="del-{{ product.pk }}" method="post" action="{% url 'product_delete' product.pk %}" style="display:none;">
+              {% csrf_token %}
+            </form>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm btn-icon"
+              onclick="confirmDelete('del-{{ product.pk }}', '{{ product.name }}')"
+              title="Supprimer"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/>
+                <path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% else %}
+<div class="card">
+  <div class="empty">
+    <div class="empty-icon">📦</div>
+    <div class="empty-title">Aucun produit</div>
+    <div class="empty-desc">Ajoutez votre premier produit pour commencer à suivre votre stock.</div>
+    <a href="{% url 'product_create' %}" class="btn btn-primary" style="margin-top:8px;">Ajouter un produit</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Dashboard</div>
+    <div class="page-subtitle">Bonjour, {{ user.first_name }} voici l'état de votre stock</div>
+  </div>
+  <a href="{% url 'product_create' %}" class="btn btn-primary">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Nouveau produit
+  </a>
+</div>
+
+<!-- Stat cards -->
+<div class="stats-grid">
+  <div class="stat-card green">
+    <div class="stat-label">Produits total</div>
+    <div class="stat-value">{{ total_products }}</div>
+    <div class="stat-desc">dans votre catalogue</div>
+  </div>
+  <div class="stat-card {% if low_stock_count > 0 %}red{% else %}green{% endif %}">
+    <div class="stat-label">Alertes stock</div>
+    <div class="stat-value">{{ low_stock_count }}</div>
+    <div class="stat-desc">sous le seuil minimum</div>
+  </div>
+  <div class="stat-card blue">
+    <div class="stat-label">Valeur totale</div>
+    <div class="stat-value" style="font-size:22px;">{{ total_value|floatformat:0 }} €</div>
+    <div class="stat-desc">en stock actuellement</div>
+  </div>
+</div>
+
+<!-- Alertes rupture -->
+{% if low_stock %}
+<div class="card mb-6">
+  <div class="card-header">
+    <span class="card-title">⚠ Ruptures imminentes</span>
+    <a href="{% url 'product_list' %}" class="btn btn-outline btn-sm">Voir tout</a>
+  </div>
+  <div class="table-wrap" style="border:none; border-radius:0;">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Catégorie</th>
+          <th>Quantité</th>
+          <th>Seuil min</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in low_stock %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>
+            {% if product.category %}
+              <span style="display:inline-flex; align-items:center; gap:6px;">
+                <span class="color-dot" style="background:{{ product.category.color }}"></span>
+                {{ product.category.name }}
+              </span>
+            {% else %}
+              <span class="text-muted">---</span>
+            {% endif %}
+          </td>
+          <td class="mono"><span class="text-danger">{{ product.quantity }}</span></td>
+          <td class="mono text-muted">{{ product.min_alert }}</td>
+          <td>
+            <a href="{% url 'movement_create' product.pk %}" class="btn btn-outline btn-sm">
+              + Entrée
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- Liens rapides -->
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+  <a href="{% url 'product_list' %}" class="card" style="padding:24px; display:flex; align-items:center; gap:16px; transition: border-color 150ms ease;">
+    <div style="width:40px; height:40px; background:var(--accent-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8">
+        <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:14px; font-weight:500; margin-bottom:2px;">Gérer les produits</div>
+      <div style="font-size:12px; color:var(--text3);">Ajouter, modifier, supprimer</div>
+    </div>
+  </a>
+
+  <a href="{% url 'category_list' %}" class="card" style="padding:24px; display:flex; align-items:center; gap:16px; transition: border-color 150ms ease;">
+    <div style="width:40px; height:40px; background:var(--blue-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+        <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:14px; font-weight:500; margin-bottom:2px;">Gérer les catégories</div>
+      <div style="font-size:12px; color:var(--text3);">Organiser votre catalogue</div>
+    </div>
+  </a>
+</div>
+{% endblock %}

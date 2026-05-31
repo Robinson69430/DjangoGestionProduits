@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Historique</div>
+    <div class="page-subtitle">{{ product.name }}</div>
+  </div>
+  <a href="{% url 'product_list' %}" class="btn btn-outline">← Retour</a>
+</div>
+
+{% if mouvements %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Quantité</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mouvement in mouvements %}
+      <tr>
+        <td class="mono">{{ mouvement.date|date:"d/m/Y H:i" }}</td>
+        <td>
+          {% if mouvement.type == "entry" %}
+            <span class="badge badge-green">Entrée</span>
+          {% else %}
+            <span class="badge badge-red">Sortie</span>
+          {% endif %}
+        </td>
+        <td class="mono">{{ mouvement.quantity }}</td>
+        <td class="text-muted">{{ mouvement.note|default:"---" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% else %}
+<div class="card">
+  <div class="empty">
+    <div class="empty-icon">📋</div>
+    <div class="empty-title">Aucun mouvement</div>
+    <div class="empty-desc">Aucune entrée ou sortie enregistrée pour ce produit.</div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

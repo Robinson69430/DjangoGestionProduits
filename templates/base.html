@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Stock{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-brand">Stock</div>
+    <div class="topbar-right">
+      {% if user.is_authenticated %}
+        <div class="topbar-user">
+          <div class="topbar-avatar">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
+          <span>{{ user.first_name }}</span>
+        </div>
+        
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <a href="{% url 'accueil' %}" class="sidebar-link">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Stock</div>
+      <a href="{% url 'product_list' %}" class="sidebar-link">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        Produits
+      </a>
+      <a href="{% url 'category_list' %}" class="sidebar-link">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+        </svg>
+        Catégories
+      </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-label" style="margin-bottom:8px">Compte</div>
+      <div class="sidebar-link" style="cursor:default; color: var(--text3); font-size:12px; font-family: var(--font-mono);">
+        {{ user.email }}
+      </div>
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'logout' %}" style="display:inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline btn-sm">Déconnexion</button>
+        </form>
+        {% endif %}
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Messages Django -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+          <button class="alert-close" aria-label="Fermer">×</button>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+  </main>
+
+</div>
+
+<!-- Modal confirm suppression (global) -->
+<div class="modal-backdrop" id="modal-confirm-delete">
+  <div class="modal">
+    <div class="modal-title">
+      Confirmer la suppression
+      <button class="btn btn-icon btn-sm" data-modal-close>×</button>
+    </div>
+    <p style="font-size:14px; color:var(--text2); margin-bottom:20px;">
+      Supprimer <strong data-delete-name style="color:var(--text)"></strong> ? Cette action est irréversible.
+    </p>
+    <div style="display:flex; gap:10px; justify-content:flex-end;">
+      <button class="btn btn-outline" data-modal-close>Annuler</button>
+      <button class="btn btn-danger" data-confirm-submit>Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

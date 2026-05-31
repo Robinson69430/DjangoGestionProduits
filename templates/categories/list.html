@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Catégories{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Catégories</div>
+    <div class="page-subtitle">{{ categories|length }} catégorie{{ categories|length|pluralize }}</div>
+  </div>
+  <button class="btn btn-primary" data-modal-open="modal-add-category">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Nouvelle catégorie
+  </button>
+</div>
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+      <button class="alert-close">×</button>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if categories %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Couleur</th>
+        <th>Nom</th>
+        <th>Produits</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cat in categories %}
+      <tr>
+        <td style="width:60px;">
+          <span class="color-dot" style="background:{{ cat.color }}; width:14px; height:14px;"></span>
+        </td>
+        <td style="font-weight:500;">{{ cat.name }}</td>
+        <td class="mono text-muted">{{ cat.product_count }}</td>
+      </tr>
+      <form id="del-{{ category.pk }}" method="post" action="{% url 'category_delete' product.pk %}" style="display:none;">
+          {% csrf_token %}
+      </form>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card">
+  <div class="empty">
+    <div class="empty-icon">🗂</div>
+    <div class="empty-title">Aucune catégorie</div>
+    <div class="empty-desc">Créez des catégories pour organiser vos produits.</div>
+    <button class="btn btn-primary" style="margin-top:8px;" data-modal-open="modal-add-category">
+      Créer une catégorie
+    </button>
+  </div>
+</div>
+{% endif %}
+
+<!-- Modal ajout catégorie -->
+<div class="modal-backdrop" id="modal-add-category">
+  <div class="modal">
+    <div class="modal-title">
+      Nouvelle catégorie
+      <button class="btn btn-icon btn-sm" data-modal-close>×</button>
+    </div>
+    <form method="post" action="{% url 'category_list' %}">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label" for="cat-name">Nom *</label>
+        <input
+          type="text"
+          id="cat-name"
+          name="name"
+          class="form-input"
+          placeholder="Ex: Visserie, Électronique..."
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="cat-color">Couleur</label>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <input
+            type="color"
+            id="cat-color"
+            name="color"
+            value="#4ade80"
+            data-preview="color-preview"
+            style="width:44px; height:36px; border:1px solid var(--border); border-radius:var(--radius); background:transparent; cursor:pointer; padding:2px;"
+          />
+          <div id="color-preview" style="flex:1; height:36px; border-radius:var(--radius); background:#4ade80; transition:background 0.15s;"></div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+        <button type="button" class="btn btn-outline" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Créer</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
