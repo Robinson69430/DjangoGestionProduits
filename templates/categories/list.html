@@ -45,9 +45,7 @@
         <td style="font-weight:500;">{{ cat.name }}</td>
         <td class="mono text-muted">{{ cat.product_count }}</td>
       </tr>
-      <form id="del-{{ category.pk }}" method="post" action="{% url 'category_delete' product.pk %}" style="display:none;">
-          {% csrf_token %}
-      </form>
+
       {% endfor %}
     </tbody>
   </table>
