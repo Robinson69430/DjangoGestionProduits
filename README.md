@@ -8,7 +8,9 @@ Cloner le projet :
 git clone https://github.com/Robinson69430/DjangoGestionProduits/
 
 Ensuite il faut creer l'environnement virtuel :
+
 cd DjangoGestionProduits
+
 python -m venv .venv
 
 Puis activer votre environnement :
