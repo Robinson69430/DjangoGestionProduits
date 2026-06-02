@@ -31,3 +31,6 @@ python manage.py migrate
 Enfin vous pouvez lancer le projet grâce à : 
 
 python manage.py runserver
+
+Puis vous pouvez aller en server local : http://127.0.0.1:8000/
+
