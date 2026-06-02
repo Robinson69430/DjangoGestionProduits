@@ -5,7 +5,7 @@ Je recommande VS Code mais tout autre IDE fait pour django sont possible. Dans l
 L'installation : 
 
 Cloner le projet :
-git clone [https://github.com/[votre-pseudo]/geststock.git](https://github.com/Robinson69430/DjangoGestionProduits/
+git clone https://github.com/Robinson69430/DjangoGestionProduits/
 
 Ensuite il faut creer l'environnement virtuel :
 cd DjangoGestionProduits
