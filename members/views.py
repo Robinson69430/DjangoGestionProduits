@@ -28,7 +28,7 @@ def register(request):
         last_name  = request.POST.get("last_name",  "").strip()
         email      = request.POST.get("email",      "").strip().lower()
         password   = request.POST.get("password",   "")
-        print(password)
+
         errors = []
 
         if not first_name or not last_name:
@@ -125,7 +125,7 @@ def product_create(request):
         quantity  = int(request.POST.get("quantity", 0))
         min_alert = int(request.POST.get("min_alert", 5))
         price     = request.POST.get("price", 0)
-        cat_id    = request.POST.get("category") or None  # ← '' devient None
+        cat_id    = request.POST.get("category") or None 
 
         if not name:
             messages.error(request, "Le nom du produit est obligatoire.")

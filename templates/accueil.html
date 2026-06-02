@@ -81,30 +81,5 @@
 </div>
 {% endif %}
 
-<!-- Liens rapides -->
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-  <a href="{% url 'product_list' %}" class="card" style="padding:24px; display:flex; align-items:center; gap:16px; transition: border-color 150ms ease;">
-    <div style="width:40px; height:40px; background:var(--accent-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8">
-        <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
-      </svg>
-    </div>
-    <div>
-      <div style="font-size:14px; font-weight:500; margin-bottom:2px;">Gérer les produits</div>
-      <div style="font-size:12px; color:var(--text3);">Ajouter, modifier, supprimer</div>
-    </div>
-  </a>
 
-  <a href="{% url 'category_list' %}" class="card" style="padding:24px; display:flex; align-items:center; gap:16px; transition: border-color 150ms ease;">
-    <div style="width:40px; height:40px; background:var(--blue-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
-        <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
-      </svg>
-    </div>
-    <div>
-      <div style="font-size:14px; font-weight:500; margin-bottom:2px;">Gérer les catégories</div>
-      <div style="font-size:12px; color:var(--text3);">Organiser votre catalogue</div>
-    </div>
-  </a>
-</div>
 {% endblock %}
