@@ -7,16 +7,16 @@ from members import views
 
 urlpatterns = [
 
-    # ── Publiques ──────────────────────────────
+    # Routes sans etre connecté
     path("",                views.index,           name="index"),
     path("register/",       views.register,        name="register"),
     path("login/",          views.login,           name="login"),
     path("logout/",         views.logout,          name="logout"),
 
-    # ── Dashboard ──────────────────────────────
+    # Dashboard
     path("accueil/",        views.accueil,         name="accueil"),
 
-    # ── Produits ───────────────────────────────
+    # Routes sur les produits
     path("produits/",                       views.product_list,     name="product_list"),
     path("produits/nouveau/",              views.product_create,   name="product_create"),
     path("produits/<int:pk>/modifier/",    views.product_edit,   name="product_edit"),
@@ -24,7 +24,7 @@ urlpatterns = [
     path("produits/<int:pk>/mouvement/",   views.movement_create,  name="movement_create"),
     path("produits/<int:pk>/historique/",   views.historique,  name="historique"),
 
-    # ── Catégories ─────────────────────────────
+    # routes pour les catégories
     path("categories/",     views.category_list,   name="category_list"),
     path("categories/<int:pk>/supprimer/",   views.category_delete,   name="category_delete"),
 
